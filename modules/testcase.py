@@ -12,7 +12,7 @@ from dojo import dojo
 from person import person, fellow, staff
 
 class testCasesDojo(unittest.TestCase):
-    def setup(self):
+    def setUp(self):
         self.dojo = dojo()
 
     def test_create_room_successfully(self):
@@ -21,3 +21,8 @@ class testCasesDojo(unittest.TestCase):
         self.assertTrue('blue_office')
         new_room_count = len(self.dojo.all_rooms)
         self.assertEqual(new_room_count - initial_room_count, 1)
+
+
+
+if __name__ == "__main__":
+  unittest.main()

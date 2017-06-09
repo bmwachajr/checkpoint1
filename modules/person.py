@@ -18,7 +18,7 @@ class fellow(person):
     def __init__(self, fellow_name, wants_acomodation):
         super().__init__(fellow_name, person_type='fellow')
 
-        if wants_acomodation = "Y":
+        if wants_acomodation == "Y":
             self.livingSpace = 'Unallocated'
         else:
             self.livingSpace = None
