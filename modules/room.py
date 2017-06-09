@@ -18,3 +18,11 @@ class livingSpace(room):
     def __init__(self, room_name, room_type):
         super().__init__(room_name, room_type)
         self.occupants = []
+
+class officeSpace(room):
+    """An office space at the dojo"""
+    max_occupants = 6
+
+    def __init__(self, room_name, room_type):
+        super().__init__(room_name, room_type)
+        self.occupants = []
