@@ -14,7 +14,7 @@ class person:
         self.officeSpace = 'Unallocated'
 
 class fellow(person):
-    """Fellows at the Dojo"""
+    """A Fellow at the Dojo"""
     def __init__(self, fellow_name, wants_acomodation):
         super().__init__(fellow_name, person_type='fellow')
 
@@ -22,3 +22,8 @@ class fellow(person):
             self.livingSpace = 'Unallocated'
         else:
             self.livingSpace = None
+
+class staff(person):
+    """A Staff member at the Dojo"""
+    def __init__(self, staff_name):
+        super().__init__(staff_name, person_type='staff')
