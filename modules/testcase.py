@@ -22,7 +22,10 @@ class testCasesDojo(unittest.TestCase):
         new_room_count = len(self.dojo.all_rooms)
         self.assertEqual(new_room_count - initial_room_count, 1)
 
-
+    def test_add_person_successfully(self):
+        new_person = self.dojo.add_person("Benjamin Wacha", "Fellow", 'N')
+        self.assertEqual(new_person.officeSpace, 'Unallocated')
+        self.assertEqual(new_person.livingSpace, None)
 
 if __name__ == "__main__":
   unittest.main()

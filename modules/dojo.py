@@ -6,6 +6,7 @@ Descrption  :  Allocate rooms to new Staff and Fellows at Andela
 
 """
 from room import room, livingSpace, officeSpace
+from person import person, fellow, staff
 
 class dojo:
     """Andela facility called the Dojo"""
@@ -33,3 +34,10 @@ class dojo:
             self.all_livingSpaces(new_livingspace)
             self.avialable_rooms.append(new_livingspace)
             return new_livingspace
+
+    def add_person(self, person_name, person_type, wants_acomodation):
+        """Add an employee at the dojo """
+        if person_type.lower() == "fellow":
+            new_person = fellow(person_name, wants_acomodation)
+            self.all_fellows.append(new_person)
+            return new_person
