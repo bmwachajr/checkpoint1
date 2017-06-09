@@ -11,6 +11,7 @@ class dojo:
     def __init__(self):
         self.all_offices = []
         self.all_livingSpaces = []
+        self.all_rooms = []
         self.avialable_rooms = []
         self.all_fellows = []
         self.all_staff = []
