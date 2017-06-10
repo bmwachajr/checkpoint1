@@ -39,5 +39,12 @@ class testCasesDojo(unittest.TestCase):
         new_staff = self.dojo.add_person("Benjamin Wacha", "Staff", '')
         self.assertEqual(new_staff.officeSpace, "Unallocated")
 
+    def test_allocates_officeSpace_successfully(self):
+        new_office = self.dojo.create_room("Oculus", "Office")
+        new_staff = self.dojo.add_person("Josh Mpaka", "Staff","")
+        new_fellow = self.dojo.add_person("Benjamin Wacha", "Fellow", "")
+        self.assertEqual(new_staff.officeSpace, "Oculus")
+        self.assertEqual(new_fellow.officeSpace, "Oculus")
+
 if __name__ == "__main__":
   unittest.main()
