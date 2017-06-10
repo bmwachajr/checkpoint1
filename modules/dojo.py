@@ -14,6 +14,8 @@ class dojo:
         self.all_offices = []
         self.all_livingSpaces = []
         self.all_rooms = []
+        self.avialable_offices = []
+        self.avialable_livingspaces = []
         self.avialable_rooms = []
         self.all_fellows = []
         self.all_staff = []
@@ -38,6 +40,29 @@ class dojo:
     def add_person(self, person_name, person_type, wants_acomodation):
         """Add an employee at the dojo """
         if person_type.lower() == "fellow":
-            new_person = fellow(person_name, wants_acomodation)
-            self.all_fellows.append(new_person)
-            return new_person
+            new_fellow = fellow(person_name)
+            self.all_fellows.append(new_fellow)
+
+            #allocate office and livingSpace
+            new_fellow.officeSpace = self.allocate_officeSpace(new_fellow)
+            if wants_acomodation.lower() == "y":
+                new_fellow.livingSpace = self.allocate_livingSpace(new_fellow)
+            return new_fellow
+
+        if person_type.lower() == "staff":
+            new_staff = staff(person_name)
+            self.all_staff.append(new_staff)
+
+            #allocate office and livingSpace
+            new_staff.officeSpace = self.allocate_officeSpace(new_staff)
+            return new_staff
+
+    def allocate_officeSpace(self, new_person):
+        """Allocate a random office"""
+        if len(self.avialable_offices) > 0:
+            random_room = random(self.avialable_offices)
+            random_room.occupants.append(new_person)
+            return(random_room.room_name)
+        else:
+            self.unallocated_people.append(new_person)
+            return 'Unallocated'
