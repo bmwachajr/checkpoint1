@@ -19,30 +19,42 @@ class dojo:
         self.avialable_rooms = []
         self.all_fellows = []
         self.all_staff = []
+        self.all_employees = []
         self.unallocated_offices = []
         self.unallocated_livingspaces = []
 
     def create_room(self, room_name, room_type):
         """Add a room and return object"""
+        for room in self.all_rooms:
+            #check if room has already been added, return object
+            if room_name == room.room_name:
+                return room
+                
         if room_type.lower() == 'office':
             new_office = officeSpace(room_name)
             self.all_rooms.append(new_office)
             self.all_offices.append(new_office)
-            self.avialable_rooms.append(new_office)
+            self.avialable_offices.append(new_office)
             return new_office
 
         if room_type.lower == 'livingspace':
             new_livingspace = livingSpace(room_name)
             self.all_rooms.append(new_livingspace)
             self.all_livingSpaces(new_livingspace)
-            self.avialable_rooms.append(new_livingspace)
+            self.avialable_livingspaces.append(new_livingspace)
             return new_livingspace
 
     def add_person(self, person_name, person_type, wants_acomodation):
         """Add an employee at the dojo """
+        for person in self.all_employees:
+            #Check if employee is added, retun that object
+            if person_name.lower() == person.person_name:
+                return person
+
         if person_type.lower() == "fellow":
             new_fellow = fellow(person_name)
             self.all_fellows.append(new_fellow)
+            self.all_employees.append(new_fellow)
 
             #allocate office and livingSpace
             new_fellow.officeSpace = self.allocate_officeSpace(new_fellow)
@@ -53,6 +65,7 @@ class dojo:
         if person_type.lower() == "staff":
             new_staff = staff(person_name)
             self.all_staff.append(new_staff)
+            self.all_employees.append(new_staff)
 
             #allocate office and livingSpace
             new_staff.officeSpace = self.allocate_officeSpace(new_staff)
@@ -61,7 +74,7 @@ class dojo:
     def allocate_officeSpace(self, new_occupant):
         """Allocate a random office"""
         if len(self.avialable_offices) > 0:
-            random_office = random(self.avialable_offices)
+            random_office = self.avialable_offices[0]#update tp rondom module
             random_office.occupants.append(new_occupant)
             return(random_office.room_name)
         else:

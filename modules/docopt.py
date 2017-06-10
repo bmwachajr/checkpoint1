@@ -9,9 +9,9 @@ import sys
 import cmd
 import docopt
 from docopt import docopt, DocoptExit
-from RoomMgt import Dojo
+from dojo import dojo
 
-dojo = Dojo()
+dojo = dojo()
 
 def docopt_cmd(func):
   """
