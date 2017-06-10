@@ -27,9 +27,9 @@ class testCasesDojo(unittest.TestCase):
         self.assertTrue(new_fellow)
 
     def test_add_fellow_without_rooms_successfully(self):
-        new_fellow = self.dojo.add_person("Benjamin Wacha", "Fellow", 'N')
+        new_fellow = self.dojo.add_person("Benjamin Wacha", "Fellow", 'Y')
         self.assertEqual(new_fellow.officeSpace, "Unallocated")
-        self.assertEqual(new_fellow.livingSpace, None)
+        self.assertEqual(new_fellow.livingSpace, "Unallocated")
 
     def test_add_staff_successfully(self):
         new_staff = self.dojo.add_person("Benjamin Wacha", "Staff", '')

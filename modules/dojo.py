@@ -19,7 +19,8 @@ class dojo:
         self.avialable_rooms = []
         self.all_fellows = []
         self.all_staff = []
-        self.unallocated_people = []
+        self.unallocated_offices = []
+        self.unallocated_livingspaces = []
 
     def create_room(self, room_name, room_type):
         """Add a room and return object"""
@@ -57,12 +58,22 @@ class dojo:
             new_staff.officeSpace = self.allocate_officeSpace(new_staff)
             return new_staff
 
-    def allocate_officeSpace(self, new_person):
+    def allocate_officeSpace(self, new_occupant):
         """Allocate a random office"""
         if len(self.avialable_offices) > 0:
-            random_room = random(self.avialable_offices)
-            random_room.occupants.append(new_person)
-            return(random_room.room_name)
+            random_office = random(self.avialable_offices)
+            random_office.occupants.append(new_occupant)
+            return(random_office.room_name)
         else:
-            self.unallocated_people.append(new_person)
-            return 'Unallocated'
+            self.unallocated_offices.append(new_occupant)
+            return "Unallocated"
+
+    def allocate_livingSpace(self, new_occupant):
+        """Allocate a living space"""
+        if len(self.avialable_livingspaces) > 0:
+            random_livingspace = random(self.avialable_livingspaces)
+            random_livingspace.occupants.append(new_occupant)
+            return (random_livingspace.room_name)
+        else:
+            self.unallocated_livingspaces.append(new_occupant)
+            return "Unallocated"
