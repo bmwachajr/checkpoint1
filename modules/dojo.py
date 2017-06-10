@@ -5,6 +5,8 @@ Github      :  @bmwachajr
 Descrption  :  Allocate rooms to new Staff and Fellows at Andela
 
 """
+import random
+from random import choice
 from room import room, livingSpace, officeSpace
 from person import person, fellow, staff
 
@@ -74,7 +76,7 @@ class dojo:
     def allocate_officeSpace(self, new_occupant):
         """Allocate a random office"""
         if len(self.avialable_offices) > 0:
-            random_office = self.avialable_offices[0]#update tp rondom module
+            random_office = choice(self.avialable_offices)
             random_office.occupants.append(new_occupant)
             return(random_office.room_name)
         else:
@@ -116,9 +118,6 @@ class dojo:
                 person.officeSpace = new_room.room_name
             else:
                 person.livingSpace = new_room.room_name
-
-
-
 
     def find_person(self, person_name):
         """Search for an employee using their unique name"""
