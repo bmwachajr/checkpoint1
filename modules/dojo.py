@@ -91,5 +91,45 @@ class dojo:
             self.unallocated_livingspaces.append(new_occupant)
             return "Unallocated"
 
-    def reallocate_person(self, person_name, room_name):
+    def reallocate_person(self, person_name, new_room_name):
         """reallocate person to new room if its avialable"""
+        person = self.find_person(person_name)
+        new_room = self.find_room(new_room_name)
+
+        if person == None:
+            return("Person Not Found")
+        elif new_room == None:
+            return("Room Not Found")
+        else:
+            #find the current room they occupy
+            if new_room.room_type == "officeSpace":
+                current_room_name = person.officeSpace
+            else:
+                current_room_name = person.livingSpace
+            current_room = self.find_room(current_room_name)
+
+        if len(new_room.occupants) < 6:
+            new_room.occupants.append(person)
+            if current_room != None:
+                current_room.occupants.remove(person)
+            if new_room.room_type == "officeSpace":
+                person.officeSpace = new_room.room_name
+            else:
+                person.livingSpace = new_room.room_name
+
+
+
+
+    def find_person(self, person_name):
+        """Search for an employee using their unique name"""
+        for person in self.all_employees:
+            if person.person_name.lower() == person_name.lower():
+                return person
+        return None
+
+    def find_room(self, room_name):
+        """search fro a room using its name"""
+        for room in self.all_rooms:
+            if room.room_name.lower() == room_name.lower():
+                return room
+        return None
