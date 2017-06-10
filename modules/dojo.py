@@ -29,7 +29,7 @@ class dojo:
             #check if room has already been added, return object
             if room_name == room.room_name:
                 return room
-                
+
         if room_type.lower() == 'office':
             new_office = officeSpace(room_name)
             self.all_rooms.append(new_office)
@@ -90,3 +90,6 @@ class dojo:
         else:
             self.unallocated_livingspaces.append(new_occupant)
             return "Unallocated"
+
+    def reallocate_person(self, person_name, room_name):
+        """reallocate person to new room if its avialable"""

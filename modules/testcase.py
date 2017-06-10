@@ -46,5 +46,12 @@ class testCasesDojo(unittest.TestCase):
         self.assertEqual(new_staff.officeSpace, "Oculus")
         self.assertEqual(new_fellow.officeSpace, "Oculus")
 
+    def test_reallocate_person_successfully(self):
+        new_office = self.dojo.create_room("Dakar", "Office")
+        new_staff = self.dojo.add_person("Albert Emron", "Staff", "")
+        self.assertEqual(new_staff.officeSpace, "Dakar")
+        other_office = self.dojo.create_room("Jinja", "Office")
+        self.dojo.reallocate_person("Albert Enron", "Jinja")
+        self.assertEqual(new_staff.officeSpace, "Jinja")
 if __name__ == "__main__":
   unittest.main()
