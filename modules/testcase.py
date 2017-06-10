@@ -53,5 +53,13 @@ class testCasesDojo(unittest.TestCase):
         other_office = self.dojo.create_room("Jinja", "Office")
         self.dojo.reallocate_person("Albert Emron", "Jinja")
         self.assertEqual(new_staff.officeSpace, "Jinja")
+
+    def test_reallocate_Unallocated_person_successfully(self):
+        new_staff = self.dojo.add_person("Albert Emron", "Staff", "")
+        self.assertEqual(new_staff.officeSpace, "Unallocated")
+        other_office = self.dojo.create_room("Jinja", "Office")
+        self.dojo.reallocate_person("Albert Emron", "Jinja")
+        self.assertEqual(new_staff.officeSpace, "Jinja")
+
 if __name__ == "__main__":
   unittest.main()
