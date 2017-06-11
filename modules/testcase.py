@@ -87,7 +87,12 @@ class testCasesDojo(unittest.TestCase):
         self.dojo.load_people('file.txt')
         self.assertEqual(len(self.dojo.unallocated_offices), 1)
         self.assertEqual(len(self.dojo.unallocated_livingspaces), 4)
-        self.dojo.print_unallocated()
+
+    def test_print_room(self):
+        Dakar = self.dojo.create_room("Dakar", "Office")
+        self.dojo.load_people('file.txt')
+        self.assertEqual(len(Dakar.occupants), 6)
+        self.dojo.print_room("Dakar")
 
 if __name__ == "__main__":
   unittest.main()

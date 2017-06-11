@@ -172,3 +172,14 @@ class dojo:
         print(".......................................")
         for  person in self.unallocated_livingspaces:
             print(person.person_name + " (" + person.person_type + ")")
+
+    def print_room(self, room_name):
+        """print people allocated to room"""
+        room = self.find_room(room_name)
+
+        if room == None:
+            return None
+        print(room.room_name + " " + room.room_type)
+        print("......................................")
+        for person in room.occupants:
+            print(person.person_name + " (" + person.person_type + ")")
