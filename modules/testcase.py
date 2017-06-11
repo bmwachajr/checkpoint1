@@ -65,6 +65,12 @@ class testCasesDojo(unittest.TestCase):
         self.dojo.load_people('file.txt')
         self.assertEqual(len(self.dojo.all_employees), 7)
 
+    def test_print_allocations(self):
+        self.dojo.create_room("Dakar", "Office")
+        self.dojo.create_room("St. Catherines", "livingSpace")
+        self.dojo.load_people('file.txt')
+        self.assertEqual(len(self.dojo.all_employees), 7)
+        self.dojo.print_allocations()
 
 if __name__ == "__main__":
   unittest.main()
