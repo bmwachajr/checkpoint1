@@ -153,7 +153,7 @@ class dojo:
                     wants_accomodation = ""
                 self.add_person(person_name, person_type, wants_accomodation)
 
-    def print_allocations(self):
+    def print_allocations(self, output):
         """Print persons allocated to each room"""
         for room in self.all_rooms:
             print(room.room_name + " - " + room.room_type)
