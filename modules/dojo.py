@@ -29,7 +29,7 @@ class dojo:
         """Add a room and return object"""
         for room in self.all_rooms:
             #check if room has already been added, return object
-            if room_name == room.room_name:
+            if room_name.lower() == room.room_name.lower():
                 return room
 
         if room_type.lower() == 'office':
@@ -39,10 +39,10 @@ class dojo:
             self.avialable_offices.append(new_office)
             return new_office
 
-        if room_type.lower == 'livingspace':
+        if room_type.lower() == 'livingspace':
             new_livingspace = livingSpace(room_name)
             self.all_rooms.append(new_livingspace)
-            self.all_livingSpaces(new_livingspace)
+            self.all_livingSpaces.append(new_livingspace)
             self.avialable_livingspaces.append(new_livingspace)
             return new_livingspace
 
@@ -78,6 +78,11 @@ class dojo:
         if len(self.avialable_offices) > 0:
             random_office = choice(self.avialable_offices)
             random_office.occupants.append(new_occupant)
+
+            #remove room from avialable rooms is occupants are 6
+            if len(random_office.occupants) > 5:
+                self.avialable_offices.remove(random_office)
+
             return(random_office.room_name)
         else:
             self.unallocated_offices.append(new_occupant)
@@ -86,8 +91,10 @@ class dojo:
     def allocate_livingSpace(self, new_occupant):
         """Allocate a living space"""
         if len(self.avialable_livingspaces) > 0:
-            random_livingspace = random(self.avialable_livingspaces)
+            random_livingspace = choice(self.avialable_livingspaces)
             random_livingspace.occupants.append(new_occupant)
+
+            #remove room from avialable room list if occupants are 4
             return (random_livingspace.room_name)
         else:
             self.unallocated_livingspaces.append(new_occupant)
@@ -145,3 +152,11 @@ class dojo:
                 else:
                     wants_accomodation = ""
                 self.add_person(person_name, person_type, wants_accomodation)
+
+    def print_allocations(self):
+        """Print persons allocated to each room"""
+        for room in self.all_rooms:
+            print(room.room_name + " - " + room.room_type)
+            print("........................................")
+            for person in room.occupants:
+                print(person.person_name + " (" +(person.person_type) + ")")
