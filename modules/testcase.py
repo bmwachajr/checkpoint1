@@ -62,6 +62,8 @@ class testCasesDojo(unittest.TestCase):
         self.assertEqual(new_staff.officeSpace, "Jinja")
 
     def test_load_people_from_file(self):
+        self.dojo.load_people('file.txt')
+        self.assertEqual(len(self.dojo.all_employees), 7)
 
 
 if __name__ == "__main__":

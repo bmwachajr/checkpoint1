@@ -132,3 +132,16 @@ class dojo:
             if room.room_name.lower() == room_name.lower():
                 return room
         return None
+
+    def load_people(self, path_to_file):
+        """Load people from a text file"""
+        with open(path_to_file, 'r') as file:
+            for line in file:
+                person_details = line.rstrip().split(' ')
+                person_name = person_details[0] + " " + person_details[1]
+                person_type = person_details[2]
+                if len(person_details) == 4:
+                    wants_accomodation = person_details[3]
+                else:
+                    wants_accomodation = ""
+                self.add_person(person_name, person_type, wants_accomodation)
