@@ -160,3 +160,15 @@ class dojo:
             print("........................................")
             for person in room.occupants:
                 print(person.person_name + " (" +(person.person_type) + ")")
+
+    def print_unallocated(self):
+        """Print unallocated people"""
+        print("People unallocated office")
+        print(".......................................")
+        for  person in self.unallocated_offices:
+            print(person.person_name + " (" + person.person_type + ")")
+
+        print("Fellows unallocated livingspaces")
+        print(".......................................")
+        for  person in self.unallocated_livingspaces:
+            print(person.person_name + " (" + person.person_type + ")")
