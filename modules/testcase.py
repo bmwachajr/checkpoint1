@@ -61,5 +61,8 @@ class testCasesDojo(unittest.TestCase):
         self.dojo.reallocate_person("Albert Emron", "Jinja")
         self.assertEqual(new_staff.officeSpace, "Jinja")
 
+    def test_load_people_from_file(self):
+
+
 if __name__ == "__main__":
   unittest.main()
