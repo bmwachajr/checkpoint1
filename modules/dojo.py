@@ -153,13 +153,19 @@ class dojo:
                     wants_accomodation = ""
                 self.add_person(person_name, person_type, wants_accomodation)
 
-    def print_allocations(self, output):
+    def print_allocations(self, file_output):
         """Print persons allocated to each room"""
+        #create an output file , else set to none
+        if file_output.lower() == "y":
+            output_file = open("allocations.txt", "w+")
+        else:
+            output_file = None
+
         for room in self.all_rooms:
-            print(room.room_name + " - " + room.room_type)
-            print("........................................")
+            print(room.room_name + " - " + room.room_type, file = output_file, flush = True)
+            print("........................................", file = output_file, flush = True)
             for person in room.occupants:
-                print(person.person_name + " (" +(person.person_type) + ")")
+                print(person.person_name + " (" +(person.person_type) + ")", file = output_file, flush = True)
 
     def print_unallocated(self):
         """Print unallocated people"""

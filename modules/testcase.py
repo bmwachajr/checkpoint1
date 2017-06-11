@@ -92,7 +92,6 @@ class testCasesDojo(unittest.TestCase):
         Dakar = self.dojo.create_room("Dakar", "Office")
         self.dojo.load_people('file.txt')
         self.assertEqual(len(Dakar.occupants), 6)
-        self.dojo.print_room("Dakar")
 
 if __name__ == "__main__":
   unittest.main()
