@@ -81,12 +81,14 @@ class testCasesDojo(unittest.TestCase):
         self.dojo.load_people('file.txt')
         self.assertEqual(len(self.dojo.all_employees), 7)
         self.assertEqual(len(self.dojo.all_rooms), 2)
+        self.dojo.print_allocations("Y")
 
     def test_print_untallocated(self):
         self.dojo.create_room("Dakar", "Office")
         self.dojo.load_people('file.txt')
         self.assertEqual(len(self.dojo.unallocated_offices), 1)
         self.assertEqual(len(self.dojo.unallocated_livingspaces), 4)
+        self.dojo.print_unallocated("Y")
 
     def test_print_room(self):
         Dakar = self.dojo.create_room("Dakar", "Office")
