@@ -19,6 +19,7 @@ class testCasesDojo(unittest.TestCase):
         initial_room_count = len(self.dojo.all_rooms)
         blue_office = self.dojo.create_room("Blue", "Office")
         new_livingSpace = self.dojo.create_room("St. Catherines", "livingSpace")
+        re_add_livingSpace = self.dojo.create_room("St. Catherines", "livingSpace")
         self.assertTrue('blue_office')
         self.assertTrue('new_livingSpace')
         new_room_count = len(self.dojo.all_rooms)
@@ -27,6 +28,8 @@ class testCasesDojo(unittest.TestCase):
     def test_add_fellow_successfully(self):
         new_fellow = self.dojo.add_person("Benjamin Wacha", "Fellow", 'N')
         self.assertTrue(new_fellow)
+        re_add_fellow = self.dojo.add_person("Benjamin Wacha", "Fellow", 'N')
+        self.assertEqual(len(self.dojo.all_employees), 1)
 
     def test_add_fellow_without_rooms_successfully(self):
         new_fellow = self.dojo.add_person("Benjamin Wacha", "Fellow", 'Y')
@@ -45,7 +48,7 @@ class testCasesDojo(unittest.TestCase):
         self.dojo.add_person("Benjamin Wacha", "Staff", '')
         person = self.dojo.find_person("Benjamin Wacha")
         self.assertEqual(person.person_name, "Benjamin Wacha")
-        self.assertEqual(len(self.dojo.find_person("Eugene Emron")), 0)
+        self.assertEqual(self.dojo.find_person("Eugene Emron"), None)
 
 
     def test_allocates_officeSpace_successfully(self):
@@ -67,6 +70,7 @@ class testCasesDojo(unittest.TestCase):
         self.assertEqual(new_staff.officeSpace, "Dakar")
         self.dojo.create_room("Jinja", "Office")
         self.dojo.reallocate_person("Albert Emron", "Jinja")
+        self.dojo.reallocate_person("Benjamin Wacha", "Oculus")#Occculus doesnt exit
         self.assertEqual(new_staff.officeSpace, "Jinja")
         self.assertEqual(len(self.dojo.all_rooms), 2)
 
@@ -117,6 +121,8 @@ class testCasesDojo(unittest.TestCase):
         Dakar = self.dojo.create_room("Dakar", "Office")
         self.dojo.load_people('file.txt')
         self.assertEqual(len(Dakar.occupants), 6)
+        self.dojo.print_room("Dakar")
+        self.dojo.print_room("Oculus")
 
 if __name__ == "__main__":
   unittest.main()

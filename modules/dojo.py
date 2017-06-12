@@ -50,7 +50,7 @@ class dojo:
         """Add an employee at the dojo """
         for person in self.all_employees:
             #Check if employee is added, retun that object
-            if person_name.lower() == person.person_name:
+            if person_name.lower() == person.person_name.lower():
                 return person
 
         if person_type.lower() == "fellow":
