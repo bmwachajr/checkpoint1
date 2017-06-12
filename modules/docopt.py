@@ -8,7 +8,7 @@ Usage:
 import sys
 import cmd
 import docopt
-from docopt import docopt, DocoptExit
+from docopt import docopt
 from dojo import dojo
 
 dojo = dojo()

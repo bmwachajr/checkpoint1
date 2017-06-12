@@ -41,6 +41,13 @@ class testCasesDojo(unittest.TestCase):
         new_staff = self.dojo.add_person("Benjamin Wacha", "Staff", '')
         self.assertEqual(new_staff.officeSpace, "Unallocated")
 
+    def test_find_person(self):
+        self.dojo.add_person("Benjamin Wacha", "Staff", '')
+        person = self.dojo.find_person("Benjamin Wacha")
+        self.assertEqual(person.person_name, "Benjamin Wacha")
+        self.assertEqual(len(self.dojo.find_person("Eugene Emron")), 0)
+
+
     def test_allocates_officeSpace_successfully(self):
         new_office = self.dojo.create_room("Oculus", "Office")
         new_staff = self.dojo.add_person("Josh Mpaka", "Staff","")
@@ -81,9 +88,25 @@ class testCasesDojo(unittest.TestCase):
         self.dojo.load_people('file.txt')
         self.assertEqual(len(self.dojo.all_employees), 7)
         self.assertEqual(len(self.dojo.all_rooms), 2)
+        self.dojo.print_allocations("")
+
+    def test_print_allocations_file_output(self):
+        self.dojo.create_room("Dakar", "Office")
+        self.dojo.create_room("St. Catherines", "livingspace")
+        self.assertTrue("St. Catherines")
+        self.dojo.load_people('file.txt')
+        self.assertEqual(len(self.dojo.all_employees), 7)
+        self.assertEqual(len(self.dojo.all_rooms), 2)
         self.dojo.print_allocations("Y")
 
     def test_print_untallocated(self):
+        self.dojo.create_room("Dakar", "Office")
+        self.dojo.load_people('file.txt')
+        self.assertEqual(len(self.dojo.unallocated_offices), 1)
+        self.assertEqual(len(self.dojo.unallocated_livingspaces), 4)
+        self.dojo.print_unallocated("")
+
+    def test_print_untallocated_file_output(self):
         self.dojo.create_room("Dakar", "Office")
         self.dojo.load_people('file.txt')
         self.assertEqual(len(self.dojo.unallocated_offices), 1)
