@@ -1,5 +1,6 @@
 checkpoint1
 .DS_Store
 modules/__pycache__
+modules/coverage.xml
 .coverage
 htmlcov

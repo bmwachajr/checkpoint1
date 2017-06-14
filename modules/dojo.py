@@ -54,7 +54,8 @@ class dojo:
                 return person
 
         if person_type.lower() == "fellow":
-            new_fellow = fellow(person_name)
+            new_person_id = len(self.all_employees) + 1
+            new_fellow = fellow(new_person_id, person_name)
             self.all_fellows.append(new_fellow)
             self.all_employees.append(new_fellow)
 
@@ -65,7 +66,8 @@ class dojo:
             return new_fellow
 
         if person_type.lower() == "staff":
-            new_staff = staff(person_name)
+            new_person_id = len(self.all_employees) + 1
+            new_staff = staff(new_person_id, person_name)
             self.all_staff.append(new_staff)
             self.all_employees.append(new_staff)
 
@@ -209,15 +211,15 @@ class dojo:
 
         #create employee table
         db.execute('''CREATE TABLE employees
-                    (ID INT PRIMARY AUTO_INCREMENT
+                    (ID INT PRIMARY NOT NULL
                     FULL_NAME TEXT NOT NULL
                     EMPLOYEE_TYPE TEXT NOT NULL
                     OFFICE TEXT NOT NULL
                     LIVINGSPACE TEXT NOT NULL):''')
         #store employees data
         for person in self.all_staff:
-            db.execute("INSERT INTO employees (FULL_NAME, EMPLOYEE_TYPE, OFFICE, LIVINGSPACE) \
-                                VALUES  (person.person_name, person.person_type, person.officeSpace, None)")
+            db.execute("INSERT INTO employees (EMPLOYEE_ID, FULL_NAME, EMPLOYEE_TYPE, OFFICE, LIVINGSPACE) \
+                                VALUES  (person.person_id, person.person_name, person.person_type, person.officeSpace, None)")
 
         #Commit and close database connection
         db.commit()
@@ -253,13 +255,13 @@ class dojo:
 
         #create rooms table
         db.execute('''CREATE TABLE rooms
-                    (ID INT PRIMARY AUTO_INCREMENT
+                    (ID INT PRIMARY NOT NULL
                     ROOM_NAME TEXT NOT NULL
                     ROOM_TYPE TEXT NOT NULL
                     ROOM_OCCUPANTS TEXT NOT NULL
                     LIVINGSPACE TEXT NOT NULL):''')
-        #store employees data
-        for person in self.all_staff:
+        #store rooms data
+        for room in self.all_rooms:
             db.execute("INSERT INTO employees (FULL_NAME, EMPLOYEE_TYPE, OFFICE, LIVINGSPACE) \
                                 VALUES  (person.person_name, person.person_type, person.officeSpace, person.livingSpace)")
 
