@@ -194,3 +194,75 @@ class dojo:
         print("......................................")
         for person in room.occupants:
             print(person.person_name + " (" + person.person_type + ")")
+
+    def save_state(self, database_name):
+        """ persist all data to sqlte database"""
+        #open database or create one
+        db = sqlite3.connect(database_name)
+        self.save_staff_state(database_name)
+
+    def save_employees_state(self, database_name):
+        if db == None:
+            return("Sorry database connection failed")
+        else:
+            print("Database connection openned successfully")
+
+        #create employee table
+        db.execute('''CREATE TABLE employees
+                    (ID INT PRIMARY AUTO_INCREMENT
+                    FULL_NAME TEXT NOT NULL
+                    EMPLOYEE_TYPE TEXT NOT NULL
+                    OFFICE TEXT NOT NULL
+                    LIVINGSPACE TEXT NOT NULL):''')
+        #store employees data
+        for person in self.all_staff:
+            db.execute("INSERT INTO employees (FULL_NAME, EMPLOYEE_TYPE, OFFICE, LIVINGSPACE) \
+                                VALUES  (person.person_name, person.person_type, person.officeSpace, None)")
+
+        #Commit and close database connection
+        db.commit()
+        db.close()
+
+    def save_fellow_state(self, database_name):
+        if db == None:
+            return("Sorry database connection failed")
+        else:
+            print("Database connection openned successfully")
+
+        #create employee table
+        db.execute('''CREATE TABLE employees
+                    (ID INT PRIMARY AUTO_INCREMENT
+                    FULL_NAME TEXT NOT NULL
+                    EMPLOYEE_TYPE TEXT NOT NULL
+                    OFFICE TEXT NOT NULL
+                    LIVINGSPACE TEXT NOT NULL):''')
+        #store employees data
+        for person in self.all_staff:
+            db.execute("INSERT INTO employees (FULL_NAME, EMPLOYEE_TYPE, OFFICE, LIVINGSPACE) \
+                                VALUES  (person.person_name, person.person_type, person.officeSpace, person.livingSpace)")
+
+        #Commit and close database connection
+        db.commit()
+        db.close()
+
+    def save_room_state(self, database_name):
+        if db == None:
+            return("Sorry database connection failed")
+        else:
+            print("Database connection openned successfully")
+
+        #create rooms table
+        db.execute('''CREATE TABLE rooms
+                    (ID INT PRIMARY AUTO_INCREMENT
+                    ROOM_NAME TEXT NOT NULL
+                    ROOM_TYPE TEXT NOT NULL
+                    ROOM_OCCUPANTS TEXT NOT NULL
+                    LIVINGSPACE TEXT NOT NULL):''')
+        #store employees data
+        for person in self.all_staff:
+            db.execute("INSERT INTO employees (FULL_NAME, EMPLOYEE_TYPE, OFFICE, LIVINGSPACE) \
+                                VALUES  (person.person_name, person.person_type, person.officeSpace, person.livingSpace)")
+
+        #Commit and close database connection
+        db.commit()
+        db.close()
