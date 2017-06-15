@@ -129,5 +129,8 @@ class testCasesDojo(unittest.TestCase):
         self.dojo.load_people('file.txt')
         self.dojo.save_state("database.db")
 
+    def test_load_state(self):
+        self.dojo.load_state("database.db")
+
 if __name__ == "__main__":
   unittest.main()
