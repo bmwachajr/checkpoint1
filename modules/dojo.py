@@ -5,7 +5,7 @@ Github      :  @bmwachajr
 Descrption  :  Allocate rooms to new Staff and Fellows at Andela
 
 """
-import random
+import random, sqlite3, pickle
 from random import choice
 from room import room, livingSpace, officeSpace
 from person import person, fellow, staff
@@ -33,14 +33,16 @@ class dojo:
                 return room
 
         if room_type.lower() == 'office':
-            new_office = officeSpace(room_name)
+            room_id = len(self.all_rooms) +1
+            new_office = officeSpace(room_id, room_name)
             self.all_rooms.append(new_office)
             self.all_offices.append(new_office)
             self.avialable_offices.append(new_office)
             return new_office
 
         if room_type.lower() == 'livingspace':
-            new_livingspace = livingSpace(room_name)
+            room_id = len(self.all_rooms) +1
+            new_livingspace = livingSpace(room_id, room_name)
             self.all_rooms.append(new_livingspace)
             self.all_livingSpaces.append(new_livingspace)
             self.avialable_livingspaces.append(new_livingspace)
@@ -199,72 +201,27 @@ class dojo:
 
     def save_state(self, database_name):
         """ persist all data to sqlte database"""
-        #open database or create one
-        db = sqlite3.connect(database_name)
-        self.save_staff_state(database_name)
+        #create pickle of dojo object
+        with open("../database/dojoObject.file", "wb") as file:
+            pickle.dump(self, file, pickle.HIGHEST_PROTOCOL)
 
-    def save_employees_state(self, database_name):
-        if db == None:
-            return("Sorry database connection failed")
-        else:
-            print("Database connection openned successfully")
-
-        #create employee table
-        db.execute('''CREATE TABLE employees
-                    (ID INT PRIMARY NOT NULL
-                    FULL_NAME TEXT NOT NULL
-                    EMPLOYEE_TYPE TEXT NOT NULL
-                    OFFICE TEXT NOT NULL
-                    LIVINGSPACE TEXT NOT NULL):''')
-        #store employees data
-        for person in self.all_staff:
-            db.execute("INSERT INTO employees (EMPLOYEE_ID, FULL_NAME, EMPLOYEE_TYPE, OFFICE, LIVINGSPACE) \
-                                VALUES  (person.person_id, person.person_name, person.person_type, person.officeSpace, None)")
-
-        #Commit and close database connection
+        #open database ctreate a table and save file
+        db = sqlite3.connect("../database/database.db")
+        self.save_dojo(db)
         db.commit()
         db.close()
 
-    def save_fellow_state(self, database_name):
+    def save_dojo(self, db):
         if db == None:
             return("Sorry database connection failed")
-        else:
-            print("Database connection openned successfully")
 
-        #create employee table
-        db.execute('''CREATE TABLE employees
-                    (ID INT PRIMARY AUTO_INCREMENT
-                    FULL_NAME TEXT NOT NULL
-                    EMPLOYEE_TYPE TEXT NOT NULL
-                    OFFICE TEXT NOT NULL
-                    LIVINGSPACE TEXT NOT NULL):''')
-        #store employees data
-        for person in self.all_staff:
-            db.execute("INSERT INTO employees (FULL_NAME, EMPLOYEE_TYPE, OFFICE, LIVINGSPACE) \
-                                VALUES  (person.person_name, person.person_type, person.officeSpace, person.livingSpace)")
+        #create database table
+        db.execute('''CREATE TABLE if not exists Dojo
+                    (ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                    NAME TEXT NOT NULL,
+                    FILE BLOB)''')
 
-        #Commit and close database connection
-        db.commit()
-        db.close()
-
-    def save_room_state(self, database_name):
-        if db == None:
-            return("Sorry database connection failed")
-        else:
-            print("Database connection openned successfully")
-
-        #create rooms table
-        db.execute('''CREATE TABLE rooms
-                    (ID INT PRIMARY NOT NULL
-                    ROOM_NAME TEXT NOT NULL
-                    ROOM_TYPE TEXT NOT NULL
-                    ROOM_OCCUPANTS TEXT NOT NULL
-                    LIVINGSPACE TEXT NOT NULL):''')
-        #store rooms data
-        for room in self.all_rooms:
-            db.execute("INSERT INTO employees (FULL_NAME, EMPLOYEE_TYPE, OFFICE, LIVINGSPACE) \
-                                VALUES  (person.person_name, person.person_type, person.officeSpace, person.livingSpace)")
-
-        #Commit and close database connection
-        db.commit()
-        db.close()
+        #Insert file into database
+        with open("../database/dojoObject.file", "rb") as input_file:
+            db.execute('''INSERT INTO dojo(NAME, FILE)
+                    VALUES(?,?)''', ("DOJO BACKUP", sqlite3.Binary(input_file.read())))

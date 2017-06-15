@@ -92,7 +92,7 @@ class testCasesDojo(unittest.TestCase):
         self.dojo.load_people('file.txt')
         self.assertEqual(len(self.dojo.all_employees), 7)
         self.assertEqual(len(self.dojo.all_rooms), 2)
-        self.dojo.print_allocations("")
+        #Sself.dojo.print_allocations("")
 
     def test_print_allocations_file_output(self):
         self.dojo.create_room("Dakar", "Office")
@@ -101,28 +101,33 @@ class testCasesDojo(unittest.TestCase):
         self.dojo.load_people('file.txt')
         self.assertEqual(len(self.dojo.all_employees), 7)
         self.assertEqual(len(self.dojo.all_rooms), 2)
-        self.dojo.print_allocations("Y")
+        #self.dojo.print_allocations("Y")
 
     def test_print_untallocated(self):
         self.dojo.create_room("Dakar", "Office")
         self.dojo.load_people('file.txt')
         self.assertEqual(len(self.dojo.unallocated_offices), 1)
         self.assertEqual(len(self.dojo.unallocated_livingspaces), 4)
-        self.dojo.print_unallocated("")
+        #self.dojo.print_unallocated("")
 
     def test_print_untallocated_file_output(self):
         self.dojo.create_room("Dakar", "Office")
         self.dojo.load_people('file.txt')
         self.assertEqual(len(self.dojo.unallocated_offices), 1)
         self.assertEqual(len(self.dojo.unallocated_livingspaces), 4)
-        self.dojo.print_unallocated("Y")
+        #self.dojo.print_unallocated("Y")
 
     def test_print_room(self):
         Dakar = self.dojo.create_room("Dakar", "Office")
         self.dojo.load_people('file.txt')
         self.assertEqual(len(Dakar.occupants), 6)
-        self.dojo.print_room("Dakar")
-        self.dojo.print_room("Oculus")
+        #self.dojo.print_room("Dakar")
+        #self.dojo.print_room("Oculus")
+
+    def test_save_state(self):
+        self.dojo.create_room("Dakar", "Office")
+        self.dojo.load_people('file.txt')
+        self.dojo.save_state("database.db")
 
 if __name__ == "__main__":
   unittest.main()

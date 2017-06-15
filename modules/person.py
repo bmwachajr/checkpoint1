@@ -25,3 +25,4 @@ class staff(person):
     """A Staff member at the Dojo"""
     def __init__(self,person_id, staff_name):
         super().__init__(person_id, staff_name, person_type='staff')
+        self.livingSpace = None
