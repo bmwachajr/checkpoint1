@@ -63,9 +63,11 @@ class dojo:
 
             #allocate office and livingSpace
             new_fellow.officeSpace = self.allocate_officeSpace(new_fellow)
-            if wants_acomodation.lower() == "y":
+            if wants_acomodation == None or wants_acomodation.lower() == 'n':
+                return new_fellow
+            elif wants_acomodation.lower() == "y":
                 new_fellow.livingSpace = self.allocate_livingSpace(new_fellow)
-            return new_fellow
+                return new_fellow
 
         if person_type.lower() == "staff":
             new_person_id = len(self.all_employees) + 1
@@ -121,6 +123,8 @@ class dojo:
                 current_room_name = person.livingSpace
             current_room = self.find_room(current_room_name)
 
+
+        #reallocate person
         if len(new_room.occupants) < 6:
             new_room.occupants.append(person)
             if current_room != None:
@@ -129,6 +133,7 @@ class dojo:
                 person.officeSpace = new_room.room_name
             else:
                 person.livingSpace = new_room.room_name
+            return person
 
     def find_person(self, person_name):
         """Search for an employee using their unique name"""
@@ -146,6 +151,7 @@ class dojo:
 
     def load_people(self, file_name):
         """Load people from a text file"""
+        loaded_people = []
         with open(("../inputs/" + file_name), 'r') as file:
             for line in file:
                 person_details = line.rstrip().split(' ')
@@ -155,38 +161,37 @@ class dojo:
                     wants_accomodation = person_details[3]
                 else:
                     wants_accomodation = ""
-                self.add_person(person_name, person_type, wants_accomodation)
+                new_person = self.add_person(person_name, person_type, wants_accomodation)
+                loaded_people.append(new_person)
+            return loaded_people
 
-    def print_allocations(self, file_output):
-        """Print persons allocated to each room"""
+
+    def print_allocations(self, output_file):
+        """Print persons allocated to each room to file"""
         #create an output file , else set to none
-        if file_output.lower() == "y":
-            output_file = open("../outputs/allocations.txt", "w+")
-        else:
-            output_file = None
+        if output_file.lower() != "":
+            output_file = open("../outputs/" + str(output_file) , "w+")
+            #print details to file
+            for room in self.all_rooms:
+                print(room.room_name + " - " + room.room_type, file = output_file, flush = True)
+                print("........................................", file = output_file, flush = True)
+                for person in room.occupants:
+                    print(person.person_name + " (" +(person.person_type) + ")", file = output_file, flush = True)
 
-        for room in self.all_rooms:
-            print(room.room_name + " - " + room.room_type, file = output_file, flush = True)
-            print("........................................", file = output_file, flush = True)
-            for person in room.occupants:
-                print(person.person_name + " (" +(person.person_type) + ")", file = output_file, flush = True)
-
-    def print_unallocated(self, file_output):
-        """Print unallocated people"""
+    def print_unallocated(self, output_file):
+        """Print unallocated people to file"""
         #create an output file , else set to none
-        if file_output.lower() == "y":
-            output_file = open("../outputs/unallocated.txt", "w+")
-        else:
-            output_file = None
+        if output_file.lower() != "":
+            output_file = open("../outputs/" + output_file, "w+")
+            #write infromation to fileprint("People unallocated office", file = output_file, flush = True)
+            print(".......................................", file = output_file, flush = True)
+            for  person in self.unallocated_offices:
+                print(person.person_name + " (" + person.person_type + ")", file = output_file, flush = True)
+            print("Fellows unallocated livingspaces", file = output_file, flush = True)
+            print(".......................................", file = output_file, flush = True)
+            for  person in self.unallocated_livingspaces:
+                print(person.person_name + " (" + person.person_type + ")", file = output_file, flush = True)
 
-        print("People unallocated office", file = output_file, flush = True)
-        print(".......................................", file = output_file, flush = True)
-        for  person in self.unallocated_offices:
-            print(person.person_name + " (" + person.person_type + ")", file = output_file, flush = True)
-        print("Fellows unallocated livingspaces", file = output_file, flush = True)
-        print(".......................................", file = output_file, flush = True)
-        for  person in self.unallocated_livingspaces:
-            print(person.person_name + " (" + person.person_type + ")", file = output_file, flush = True)
 
     def print_room(self, room_name):
         """print people allocated to room"""
@@ -194,10 +199,9 @@ class dojo:
 
         if room == None:
             return None
-        print(room.room_name + " " + room.room_type)
-        print("......................................")
-        for person in room.occupants:
-            print(person.person_name + " (" + person.person_type + ")")
+        else:
+            return room
+
 
     def save_state(self, database_name):
         """ persist all data to sqlte database"""
@@ -206,10 +210,14 @@ class dojo:
             pickle.dump(self, file, pickle.HIGHEST_PROTOCOL)
 
         #open database ctreate a table and save file
-        db = sqlite3.connect("../database/database.db")
+        if database_name == "":
+            database_name = "database.db"
+
+        db = sqlite3.connect("../database/" + str(database_name))
         self.save_dojo(db)
         db.commit()
         db.close()
+        return True
 
     def save_dojo(self, db):
         if db == None:

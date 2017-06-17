@@ -92,7 +92,7 @@ class testCasesDojo(unittest.TestCase):
         self.dojo.load_people('file.txt')
         self.assertEqual(len(self.dojo.all_employees), 7)
         self.assertEqual(len(self.dojo.all_rooms), 2)
-        #Sself.dojo.print_allocations("")
+        self.dojo.print_allocations("file.txt")
 
     def test_print_allocations_file_output(self):
         self.dojo.create_room("Dakar", "Office")
