@@ -1,2 +1,8 @@
 checkpoint1
 .DS_Store
+.coverage
+database
+inputs
+modules/__pycache__/
+modules/htmlcov/
+outputs
