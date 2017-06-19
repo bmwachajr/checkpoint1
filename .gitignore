@@ -3,6 +3,8 @@ checkpoint1
 modules/__pycache__
 modules/coverage.xml
 outputs/
-database/
+database/database.db
+database/dojoObject.file
+database/full.db
 .coverage
 htmlcov
