@@ -3,6 +3,6 @@ checkpoint1
 modules/__pycache__
 modules/coverage.xml
 outputs/
-database/*
+database/
 .coverage
 htmlcov
