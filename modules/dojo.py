@@ -170,27 +170,27 @@ class dojo:
         """Print persons allocated to each room to file"""
         #create an output file , else set to none
         if output_file.lower() != "":
-            output_file = open("../outputs/" + str(output_file) , "w+")
-            #print details to file
-            for room in self.all_rooms:
-                print(room.room_name + " - " + room.room_type, file = output_file, flush = True)
-                print("........................................", file = output_file, flush = True)
-                for person in room.occupants:
-                    print(person.person_name + " (" +(person.person_type) + ")", file = output_file, flush = True)
+            with open("../outputs/" + str(output_file) , "w+") as output_file:
+                #print details to file
+                for room in self.all_rooms:
+                    print(room.room_name + " - " + room.room_type, file = output_file, flush = True)
+                    print("........................................", file = output_file, flush = True)
+                    for person in room.occupants:
+                        print(person.person_name + " (" +(person.person_type) + ")", file = output_file, flush = True)
 
     def print_unallocated(self, output_file):
         """Print unallocated people to file"""
         #create an output file , else set to none
         if output_file.lower() != "":
-            output_file = open("../outputs/" + output_file, "w+")
-            #write infromation to fileprint("People unallocated office", file = output_file, flush = True)
-            print(".......................................", file = output_file, flush = True)
-            for  person in self.unallocated_offices:
-                print(person.person_name + " (" + person.person_type + ")", file = output_file, flush = True)
-            print("Fellows unallocated livingspaces", file = output_file, flush = True)
-            print(".......................................", file = output_file, flush = True)
-            for  person in self.unallocated_livingspaces:
-                print(person.person_name + " (" + person.person_type + ")", file = output_file, flush = True)
+            with open("../outputs/" + output_file, "w+") as output_file:
+                #write infromation to fileprint("People unallocated office", file = output_file, flush = True)
+                print(".......................................", file = output_file, flush = True)
+                for  person in self.unallocated_offices:
+                    print(person.person_name + " (" + person.person_type + ")", file = output_file, flush = True)
+                print("Fellows unallocated livingspaces", file = output_file, flush = True)
+                print(".......................................", file = output_file, flush = True)
+                for  person in self.unallocated_livingspaces:
+                    print(person.person_name + " (" + person.person_type + ")", file = output_file, flush = True)
 
 
     def print_room(self, room_name):

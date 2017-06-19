@@ -3,9 +3,10 @@ Usage:
   Dojo
   Dojo create_room <room_type> <room_name> ...
   Dojo add_person <person_name> <FELLOW_or_STAFF> [<wants_accomodation>]
-  Dojo add_person <person_name>
   Dojo print_room <room_name>
-  Dojo get_rooms
+  Dojo reallocate_person <person name>
+  Dojo load_people
+  Dojo save_state ['<-o=sqlite_database>']
 
 """
 import cmd
