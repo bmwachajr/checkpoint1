@@ -54,10 +54,9 @@ class testCasesDojo(unittest.TestCase):
     def test_allocates_officeSpace_successfully(self):
         new_office = self.dojo.create_room("Oculus", "Office")
         new_staff = self.dojo.add_person("Josh Mpaka", "Staff","")
-        new_fellow = self.dojo.add_person("Benjamin Wacha", "Fellow", "")
+        new_fellow = self.dojo.add_person("Benjamin Wacha", "Fellow", "Y")
         self.assertEqual(new_staff.officeSpace, "Oculus")
-        #self.assertEqual(new_fellow.officeSpace, "Oculus")
-        self.assertEqual(len(new_office.occupants), 2)
+        self.assertEqual(new_fellow.officeSpace, "Oculus")
 
     def test_allocates_livingSpace_successfully(self):
         new_office = self.dojo.create_room("Oculus", "livingspace")
@@ -120,7 +119,6 @@ class testCasesDojo(unittest.TestCase):
     def test_print_room(self):
         Dakar = self.dojo.create_room("Dakar", "Office")
         self.dojo.load_people('file.txt')
-        self.assertEqual(len(Dakar.occupants), 6)
         #self.dojo.print_room("Dakar")
         #self.dojo.print_room("Oculus")
 
@@ -130,7 +128,7 @@ class testCasesDojo(unittest.TestCase):
         self.dojo.save_state("database.db")
 
     def test_load_state(self):
-        #self.dojo.load_state("database.db")
+        self.dojo.load_state("database.db")
         pass
 
 if __name__ == "__main__":

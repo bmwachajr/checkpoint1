@@ -65,10 +65,7 @@ class DojoCLI(cmd.Cmd):
         #create rooms
         for room in room_list:
             output = dojo.create_room(room, room_type)
-            if output == None:
-                print('A room was not created')
-            else:
-                print("A " + output.room_type + " called " + output.room_name + " was successfully created")
+            print(output)
         print("")
 
     @docopt_cmd
