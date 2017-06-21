@@ -62,7 +62,7 @@ class DojoCLI(cmd.Cmd):
         room_type = arg['<room_type>']
         room_list = arg['<room_name>']
 
-        #create rooms
+        # create rooms
         for room in room_list:
             output = dojo.create_room(room, room_type)
             print(output)
@@ -75,25 +75,9 @@ class DojoCLI(cmd.Cmd):
         person_type = arg['<person_type>']
         wants_accomodation = arg['<wants_accomodation>']
 
-        #add the person
+        # add the person
         output = dojo.add_person(person_name, person_type, wants_accomodation)
-        if output == None:
-            print('Person was not added')
-        else:
-            print("A " + output.person_type + " called " + output.person_name + " was successfully added")
-            if output.officeSpace == "Unallocated":
-                print(output.person_name + ' was not allocated an Office Space')
-            else:
-                print(output.person_name + ' was allocated Office Space ' + output.officeSpace)
-
-            #if its a fellow, print accomodation status
-            if output.person_type == "fellow" and output.livingSpace != None:
-                print(output.person_name + ' was allocated living Space ' + output.livingSpace)
-
-            if output.person_type == "fellow" and output.livingSpace == "Unallocated":
-                print(output.person_name + ' was not allocated a living Space')
-
-            print("")
+        print(output)
 
     @docopt_cmd
     def do_reallocate_person(self, arg):
@@ -119,19 +103,7 @@ class DojoCLI(cmd.Cmd):
             print('Nothing was loaded')
         else:
             for person in output:
-                print("A " + person.person_type + " called " + person.person_name + " was successfully added")
-                if person.officeSpace == "Unallocated":
-                    print(person.person_name + ' was not allocated an Office Space')
-                else:
-                    print(person.person_name + ' was allocated Office Space ' + person.officeSpace)
-
-                #if its a fellow, print accomodation status
-                if person.person_type == "fellow" and person.livingSpace != None:
-                    print(person.person_name + ' was allocated living Space ' + person.livingSpace)
-
-                if person.person_type == "fellow" and person.livingSpace == "Unallocated":
-                    print(person.person_name + ' was not allocated a living Space')
-
+                print(person)
                 print("")
 
     @docopt_cmd

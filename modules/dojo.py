@@ -32,7 +32,7 @@ class dojo:
         for room in self.all_rooms:
             # check if room has already been added, return object
             if room_name.lower() == room.room_name.lower():
-                return room
+                return (room.room_name + " already exists")
 
         if room_type.lower() == 'office':
             room_id = len(self.all_rooms) + 1
@@ -65,7 +65,7 @@ class dojo:
         for person in self.all_employees:
             # Check if employee is added, retun that object
             if person_name.lower() == person.person_name.lower():
-                return person
+                return ("A person with the name " + person.person_name + " already exists")
 
         if person_type.lower() == "fellow":
             new_person_id = len(self.all_employees) + 1
@@ -79,7 +79,9 @@ class dojo:
                 return new_fellow
             elif wants_acomodation.lower() == "y":
                 new_fellow.livingSpace = self.allocate_livingSpace(new_fellow)
-                return new_fellow
+                return ("A fellow called " + new_fellow.person_name + " was created successfully\n"+
+                        "Fellow " + new_fellow.person_name + " was allocated the Office " + new_fellow.officeSpace +"\n"+
+                        "Fellow " + new_fellow.person_name + " was allocated a livindspace " + new_fellow.livingSpace)
 
         if person_type.lower() == "staff":
             new_person_id = len(self.all_employees) + 1
@@ -89,7 +91,8 @@ class dojo:
 
             # allocate office and livingSpace
             new_staff.officeSpace = self.allocate_officeSpace(new_staff)
-            return new_staff
+            return ("A staff called " + new_staff.person_name + " was created successfully \n"+
+                    "Staff " + new_staff.person_name + " was allocated the office " + new_staff.officeSpace )
 
     def allocate_officeSpace(self, new_occupant):
         """Allocate a random office"""
@@ -127,6 +130,8 @@ class dojo:
             return("Person Not Found")
         elif new_room is None:
             return("Room Not Found")
+        elif person.person_type.lower() == "staff" and new_room.room_type == "livingSpace":
+            return("Cannot assign a staff to a Livingspace")
         else:
             # find the current room they occupy
             if new_room.room_type == "officeSpace":
