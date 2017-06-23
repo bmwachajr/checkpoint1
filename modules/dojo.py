@@ -12,7 +12,7 @@ from room import livingSpace, officeSpace
 from person import fellow, staff
 
 
-class dojo:
+class dojo(object):
     """Andela facility called the Dojo"""
     def __init__(self):
         self.all_offices = []
@@ -41,7 +41,7 @@ class dojo:
             self.all_offices.append(new_office)
             self.avialable_offices.append(new_office)
 
-            #return receipt of success or failure
+            # return receipt of success or failure
             if new_office is not None:
                 return ("An Office " + new_office.room_name + " was successfully created")
             else:
@@ -54,7 +54,7 @@ class dojo:
             self.all_livingSpaces.append(new_livingspace)
             self.avialable_livingspaces.append(new_livingspace)
 
-            #return receipt of success or failure
+            # return receipt of success or failure
             if new_livingspace is not None:
                 return ("A livingspace " + new_livingspace.room_name + "was created successfully")
             else:
@@ -98,7 +98,7 @@ class dojo:
         """Allocate a random office"""
         if len(self.avialable_offices) > 0:
             random_office = choice(self.avialable_offices)
-            random_office.occupants.append(new_occupant)
+            random_office.occupants.append(new_occupant.person_name)
 
             # remove room from avialable rooms is occupants are 6
             if len(random_office.occupants) > 5:
@@ -144,7 +144,7 @@ class dojo:
         if len(new_room.occupants) < 6:
             new_room.occupants.append(person)
             if current_room is not None:
-                current_room.occupants.remove(person)
+                current_room.occupants.remove(person.person_name)
             if new_room.room_type == "officeSpace":
                 person.officeSpace = new_room.room_name
             else:
@@ -191,7 +191,7 @@ class dojo:
                     print(room.room_name + " - " + room.room_type, file=output_file, flush = True)
                     print("."*40, file=output_file, flush=True)
                     for person in room.occupants:
-                        print(person.person_name + " (" + (person.person_type) + ")", file=output_file, flush=True)
+                        print(person, file=output_file, flush=True)
 
     def print_unallocated(self, output_file):
         """Print unallocated people to file"""
@@ -219,47 +219,35 @@ class dojo:
 
     def save_state(self, database_name):
         """ persist all data to sqlte database"""
-        # create pickle of dojo object
-        with open("../database/dojoObject.file", "wb") as file:
-            pickle.dump(self, file, pickle.HIGHEST_PROTOCOL)
+        # create prickle of dojo object
+        rooms_pickle = pickle.dumps(self.all_rooms)
+        employees_pickle = pickle.dumps(self.all_employees)
+        dojo_pickle = pickle.dumps(self)
+        #print(dojo_pickle)
 
-        # open database ctreate a table and save file
-        if database_name == "":
-            database_name = "database.db"
-
+        # open database and ctreate a table
         db = sqlite3.connect("../database/" + str(database_name))
-        self.save_dojo(db)
-        db.commit()
-        db.close()
-        return True
-
-    def save_dojo(self, db):
-        if db is None:
-            return("Sorry database connection failed")
-
-        # create database table
         db.execute('''CREATE TABLE if not exists Dojo
-                    (ID INTEGER PRIMARY KEY AUTOINCREMENT,
-                    NAME TEXT NOT NULL,
-                    FILE BLOB)''')
+                     (ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                     EMPLOYEES TEXT NOT NULL,
+                     ROOMS TEXT NOT NULL,
+                     DOJO TEXT NOT NULL)''')
 
         # Insert file into database
-        with open("../database/dojoObject.file", "rb") as input_file:
-            db.execute('''INSERT INTO dojo(NAME, FILE)
-                    VALUES(?,?)''', ("DOJO BACKUP", sqlite3.Binary(input_file.read())))
+        db.execute('''INSERT INTO dojo(EMPLOYEES, ROOMS, DOJO)
+                     VALUES(?,?,?)''', (employees_pickle, rooms_pickle, dojo_pickle))
 
-    def load_state(self, database_name):
-        """ persist all data from sqlte database"""
-        # create pickle of dojo object
-        with open("../database/dojoObject.file", "wb") as file:
-            pickle.dump(self, file, pickle.HIGHEST_PROTOCOL)
-
-        # open database ctreate a table and save file
-        if database_name == "":
-            database_name = "database.db"
-
-        db = sqlite3.connect("../database/" + str(database_name))
-        self.save_dojo(db)
         db.commit()
         db.close()
-        return True
+
+    def load_state(self, database_name):
+        """Restore all data to the application"""
+        # retrieve file from database
+        db = sqlite3.connect("../database/" + str(database_name))
+        cursor = db.cursor()
+        cursor.execute('''SELECT EMPLOYEES, ROOMS, DOJO FROM Dojo
+                    ORDER BY ID DESC
+                    LIMIT 1''')
+        employee_pickle, rooms_pickle, dojo_pickle = cursor.fetchone()
+        self = pickle.loads(dojo_pickle)
+        return self

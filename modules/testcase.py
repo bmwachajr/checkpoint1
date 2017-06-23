@@ -8,6 +8,7 @@ Descrption  :  Allocate rooms to new Staff and Fellows at Andela
 
 import unittest
 from unittest import TestCase
+import sqlite3
 from dojo import dojo
 from person import person, fellow, staff
 
@@ -128,10 +129,19 @@ class testCasesDojo(unittest.TestCase):
         self.dojo.create_room("Dakar", "Office")
         self.dojo.load_people('file.txt')
         self.dojo.save_state("database.db")
+        db = sqlite3.connect("../database/database.db")
+        cursor = db.cursor()
+        cursor.execute('''SELECT EMPLOYEES, ROOMS FROM dojo
+                    ORDER BY ID DESC
+                    LIMIT 1''')
+        FILE = cursor.fetchall()
+        self.assertFalse(FILE is None)
 
     def test_load_state(self):
-        self.dojo.load_state("database.db")
-        pass
+        self.dojo = self.dojo.load_state("database.db")
+        self.assertTrue(self.dojo.all_rooms)
+        print(len(self.dojo.all_offices))
+
 
 if __name__ == "__main__":
-  unittest.main()
+    unittest.main()

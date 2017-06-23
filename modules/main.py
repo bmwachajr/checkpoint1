@@ -17,7 +17,8 @@ from dojo import dojo
 
 dojo = dojo()
 
-def docopt_cmd(func): # pragma: no cover
+
+def docopt_cmd(func):  # pragma: no cover
     """
     This decorator is used to simplify the try/except block and pass the result
     of the docopt parsing to the called action.
@@ -87,7 +88,7 @@ class DojoCLI(cmd.Cmd):
 
         #reallocate person
         output = dojo.reallocate_person(person_name, new_room)
-        if type(output) == str:
+        if isinstance(output, str):
             print(output)
         else:
             print(output.person_name + " was successfully reallocated to " + new_room)
@@ -166,15 +167,31 @@ class DojoCLI(cmd.Cmd):
         if arg['<--db=sqlite_database>'] == None:
             arg['<--db=sqlite_database>'] = "database.db"
         output = dojo.save_state(arg['<--db=sqlite_database>'])
-        if output ==True:
+        if output == True:
             print("successfully saved state to database")
         else:
             print("There was a problem in saving state.")
+
+    @docopt_cmd
+    def do_load_state(self, arg):
+        """Usage: load_state [<--db=sqlite_database>]"""
+        if arg['<--db=sqlite_database>'] is None:
+            database_name = "database.db"
+        else:
+            database_name = arg['<--db=sqlite_database>']
+
+        bolo = dojo()
+
+        dojo = bolo.load_state(database_name)
+
+        if dojo is not None:
+            print("We have lift off")
 
     def do_quit(self, arg):
         """Quits out of Interactive Mode."""
         print('Good Bye!')
         exit()
+
 
 if __name__ == '__main__':
     opt = docopt(__doc__, sys.argv[1:])

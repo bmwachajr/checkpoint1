@@ -1,14 +1,14 @@
 Dakar - officeSpace
 ........................................
-OLUWAFEMI SULE (fellow)
-DOMINIC WALTERS (staff)
-SIMON PATTERSON (fellow)
-MARI LAWRENCE (fellow)
-LEIGH RILEY (staff)
-TANA LOPEZ (fellow)
+OLUWAFEMI SULE
+DOMINIC WALTERS
+SIMON PATTERSON
+MARI LAWRENCE
+LEIGH RILEY
+TANA LOPEZ
 St. Catherines - livingSpace
 ........................................
-OLUWAFEMI SULE (fellow)
-SIMON PATTERSON (fellow)
-MARI LAWRENCE (fellow)
-TANA LOPEZ (fellow)
+<person.fellow object at 0x10ff74a58>
+<person.fellow object at 0x10ff74358>
+<person.fellow object at 0x10ff747b8>
+<person.fellow object at 0x10ff748d0>
