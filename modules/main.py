@@ -121,7 +121,7 @@ class DojoCLI(cmd.Cmd):
                 print(room.room_name + " - " + room.room_type)
                 print("........................................")
                 for person in room.occupants:
-                    print(person.person_name + " (" +(person.person_type) + ")")
+                    print(person)
                 print("")
 
     @docopt_cmd
@@ -180,9 +180,7 @@ class DojoCLI(cmd.Cmd):
         else:
             database_name = arg['<--db=sqlite_database>']
 
-        bolo = dojo()
-
-        dojo = bolo.load_state(database_name)
+        dojo.load_state(database_name)
 
         if dojo is not None:
             print("We have lift off")

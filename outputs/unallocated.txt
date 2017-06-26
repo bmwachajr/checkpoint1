@@ -8,7 +8,7 @@ LEIGH RILEY
 TANA LOPEZ
 St. Catherines - livingSpace
 ........................................
-<person.fellow object at 0x10ff74a58>
-<person.fellow object at 0x10ff74358>
-<person.fellow object at 0x10ff747b8>
-<person.fellow object at 0x10ff748d0>
+OLUWAFEMI SULE
+SIMON PATTERSON
+MARI LAWRENCE
+TANA LOPEZ

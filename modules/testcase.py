@@ -120,13 +120,14 @@ class testCasesDojo(unittest.TestCase):
         self.dojo.print_unallocated("Y")
 
     def test_print_room(self):
-        Dakar = self.dojo.create_room("Dakar", "Office")
+        self.dojo.create_room("Dakar", "Office")
         self.dojo.load_people('file.txt')
         #self.dojo.print_room("Dakar")
         #self.dojo.print_room("Oculus")
 
     def test_save_state(self):
-        self.dojo.create_room("Dakar", "Office")
+        self.dojo.create_room("Dakar", "office")
+        self.dojo.create_room("St.Catherine", "livingspace")
         self.dojo.load_people('file.txt')
         self.dojo.save_state("database.db")
         db = sqlite3.connect("../database/database.db")
@@ -138,7 +139,7 @@ class testCasesDojo(unittest.TestCase):
         self.assertFalse(FILE is None)
 
     def test_load_state(self):
-        self.dojo = self.dojo.load_state("database.db")
+        self.dojo.load_state("database.db")
         self.assertTrue(self.dojo.all_rooms)
         print(len(self.dojo.all_offices))
 

@@ -20,9 +20,6 @@ class dojo(object):
         self.all_rooms = []
         self.avialable_offices = []
         self.avialable_livingspaces = []
-        self.avialable_rooms = []
-        self.all_fellows = []
-        self.all_staff = []
         self.all_employees = []
         self.unallocated_offices = []
         self.unallocated_livingspaces = []
@@ -70,7 +67,6 @@ class dojo(object):
         if person_type.lower() == "fellow":
             new_person_id = len(self.all_employees) + 1
             new_fellow = fellow(new_person_id, person_name)
-            self.all_fellows.append(new_fellow)
             self.all_employees.append(new_fellow)
 
             # allocate office and livingSpace
@@ -86,7 +82,6 @@ class dojo(object):
         if person_type.lower() == "staff":
             new_person_id = len(self.all_employees) + 1
             new_staff = staff(new_person_id, person_name)
-            self.all_staff.append(new_staff)
             self.all_employees.append(new_staff)
 
             # allocate office and livingSpace
@@ -113,7 +108,7 @@ class dojo(object):
         """Allocate a living space"""
         if len(self.avialable_livingspaces) > 0:
             random_livingspace = choice(self.avialable_livingspaces)
-            random_livingspace.occupants.append(new_occupant)
+            random_livingspace.occupants.append(new_occupant.person_name)
 
             # remove room from avialable room list if occupants are 4
             return (random_livingspace.room_name)
@@ -142,7 +137,7 @@ class dojo(object):
 
         # reallocate person
         if len(new_room.occupants) < 6:
-            new_room.occupants.append(person)
+            new_room.occupants.append(person.person_name)
             if current_room is not None:
                 current_room.occupants.remove(person.person_name)
             if new_room.room_type == "officeSpace":
@@ -222,7 +217,7 @@ class dojo(object):
         # create prickle of dojo object
         rooms_pickle = pickle.dumps(self.all_rooms)
         employees_pickle = pickle.dumps(self.all_employees)
-        dojo_pickle = pickle.dumps(self)
+        #dojo_pickle = pickle.dumps(self)
         #print(dojo_pickle)
 
         # open database and ctreate a table
@@ -230,12 +225,11 @@ class dojo(object):
         db.execute('''CREATE TABLE if not exists Dojo
                      (ID INTEGER PRIMARY KEY AUTOINCREMENT,
                      EMPLOYEES TEXT NOT NULL,
-                     ROOMS TEXT NOT NULL,
-                     DOJO TEXT NOT NULL)''')
+                     ROOMS TEXT NOT NULL)''')
 
         # Insert file into database
-        db.execute('''INSERT INTO dojo(EMPLOYEES, ROOMS, DOJO)
-                     VALUES(?,?,?)''', (employees_pickle, rooms_pickle, dojo_pickle))
+        db.execute('''INSERT INTO dojo(EMPLOYEES, ROOMS)
+                     VALUES(?,?)''', (employees_pickle, rooms_pickle))
 
         db.commit()
         db.close()
@@ -245,9 +239,34 @@ class dojo(object):
         # retrieve file from database
         db = sqlite3.connect("../database/" + str(database_name))
         cursor = db.cursor()
-        cursor.execute('''SELECT EMPLOYEES, ROOMS, DOJO FROM Dojo
+        cursor.execute('''SELECT EMPLOYEES, ROOMS FROM Dojo
                     ORDER BY ID DESC
                     LIMIT 1''')
-        employee_pickle, rooms_pickle, dojo_pickle = cursor.fetchone()
-        self = pickle.loads(dojo_pickle)
-        return self
+        employee_pickle, rooms_pickle = cursor.fetchone()
+        self.all_rooms = pickle.loads(rooms_pickle)
+        self.all_employees = pickle.loads(employee_pickle)
+        self.room_restore()
+        self.employee_restore()
+
+    def room_restore(self):
+        for room in self.all_rooms:
+            print(room.room_name + " " + room.room_type)
+            # appende to correct room list
+            if room.room_type.lower() == "officespace":
+                self.all_offices.append(room)
+                if len(room.occupants) < 6:
+                    self.avialable_offices.append(room)
+            else:
+                self.all_livingSpaces.append(room)
+                if len(room.occupants) < 4:
+                    self.avialable_offices.append(room)
+
+    def employee_restore(self):
+        """ restores person to the right lists """
+        for person in self.all_employees:
+            if person.officeSpace == "Unallocated":
+                self.unallocated_offices.append(person)
+
+            if person.person_type == "fellow":
+                if person.livingSpace == "Unallocated":
+                    self.unallocated_livingspaces.append(person)
