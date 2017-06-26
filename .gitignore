@@ -1,8 +1,19 @@
 checkpoint1
 .DS_Store
+<<<<<<< HEAD
 .coverage
 database
 inputs
 modules/__pycache__/
 modules/htmlcov/
 outputs
+=======
+modules/__pycache__
+modules/coverage.xml
+outputs/
+database/database.db
+database/dojoObject.file
+database/full.db
+.coverage
+htmlcov
+>>>>>>> develop
