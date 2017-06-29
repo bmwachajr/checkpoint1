@@ -109,12 +109,12 @@ class DojoCLI(cmd.Cmd):
         person_name = arg['<first_name>'] + " " + arg['<last_name>']
         new_room = arg['<new_room_name>']
 
-        #reallocate person
+        # reallocate person
         output = dojo.reallocate_person(person_name, new_room)
         if isinstance(output, str):
             print(output)
         else:
-            print(output.person_name + " was successfully reallocated to " + new_room)
+            print(output.person_name + " reallocated to " + new_room)
             print("")
 
     @docopt_cmd
@@ -122,8 +122,8 @@ class DojoCLI(cmd.Cmd):
         """Usage: load_people """
         output = dojo.load_people('file.txt')
 
-        #print details
-        if output == None:
+        # print details
+        if output is None:
             print('Nothing was loaded')
         else:
             for person in output:
@@ -133,16 +133,16 @@ class DojoCLI(cmd.Cmd):
     @docopt_cmd
     def do_print_allocations(self, arg):
         """Usage: print_allocations [<-o=filename>]"""
-        if arg['<-o=filename>'] != None and arg['<-o=filename>'] != "":
-            output = dojo.print_allocations(arg['<-o=filename>'])
+        if arg['<-o=filename>'] is not None and arg['<-o=filename>'] != "":
+            dojo.print_allocations(arg['<-o=filename>'])
 
-        #print information
+        # print information
         if len(dojo.all_rooms) == 0:
             print("No rooms and allocations added yet")
         else:
             for room in dojo.all_rooms:
                 print(room.room_name + " - " + room.room_type)
-                print("........................................")
+                print("."*40)
                 for person in room.occupants:
                     print(person)
                 print("")
@@ -150,25 +150,25 @@ class DojoCLI(cmd.Cmd):
     @docopt_cmd
     def do_print_unallocated(self, arg):
         """Usage: print_unallocated [<-o=filename>]"""
-        if arg['<-o=filename>'] != None and arg['<-o=filename>'] != "":
-            output = dojo.print_unallocated(arg['<-o=filename>'])
+        if arg['<-o=filename>'] is not None and arg['<-o=filename>'] != "":
+            dojo.print_unallocated(arg['<-o=filename>'])
 
-        #print information
+        # print unallocated office space
         if len(dojo.unallocated_offices) == 0:
             print("No people with office space unallocations")
         else:
-            print("Employees unallocated Office spaces \n" + "........................................")
+            print("Employees unallocated Office spaces \n" + "."*40)
             for person in dojo.unallocated_offices:
-                print(person.person_name + " (" +(person.person_type) + ")")
+                print(person.person_name + " (" + (person.person_type) + ")")
         print("")
 
-        #print information
+        # print unallocated livingspace
         if len(dojo.unallocated_livingspaces) == 0:
             print("No people with Living space unallocations")
         else:
-            print("Employees unallocated Living spaces\n" + "........................................")
+            print("Employees unallocated Living spaces\n" + "."*40)
             for person in dojo.unallocated_livingspaces:
-                print(person.person_name + " (" +(person.person_type) + ")")
+                print(person.person_name + " (" + (person.person_type) + ")")
         print("")
 
     @docopt_cmd
@@ -176,21 +176,21 @@ class DojoCLI(cmd.Cmd):
         """Usage: print_room <room_name>"""
         room = dojo.find_room(arg['<room_name>'])
 
-        if room == None:
+        if room is None:
             print("Room not found, please try again")
         else:
             print(room.room_name + " " + room.room_type)
-            print("......................................")
+            print("."*40)
             for person in room.occupants:
                 print(person.person_name + " (" + person.person_type + ")")
 
     @docopt_cmd
     def do_save_state(self, arg):
         """Usage: save_state [<--db=sqlite_database>]"""
-        if arg['<--db=sqlite_database>'] == None:
+        if arg['<--db=sqlite_database>'] is None:
             arg['<--db=sqlite_database>'] = "database.db"
         output = dojo.save_state(arg['<--db=sqlite_database>'])
-        if output == True:
+        if output is True:
             print("successfully saved state to database")
         else:
             print("There was a problem in saving state.")
