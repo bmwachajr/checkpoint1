@@ -4,9 +4,13 @@ Usage:
   Dojo create_room <room_type> <room_name> ...
   Dojo add_person <person_name> <FELLOW_or_STAFF> [<wants_accomodation>]
   Dojo print_room <room_name>
-  Dojo reallocate_person <person name>
   Dojo load_people
+  Dojo print_person <first_name> <last_name>
+  Dojo reallocate_person <person name>
+  Dojo print_allocations [<-o=filename>]
+  Dojo print_unallocated [<-o=filename>]
   Dojo save_state ['<-o=sqlite_database>']
+  Dojo load_state ['<-o=sqlite_database>']
 
 """
 import cmd
@@ -50,6 +54,7 @@ def docopt_cmd(func):  # pragma: no cover
 
     return fn
 
+
 class DojoCLI(cmd.Cmd):
     intro = 'Welcome to Dojo Command Line Interface' \
         + ' (type help for a list of commands.)'
@@ -79,6 +84,24 @@ class DojoCLI(cmd.Cmd):
         # add the person
         output = dojo.add_person(person_name, person_type, wants_accomodation)
         print(output)
+
+    @docopt_cmd
+    def do_print_person(self, arg):
+        """Usage: print_person <first_name> <last_name> """
+        person_name = arg['<first_name>'] + " " + arg['<last_name>']
+
+        output = dojo.find_person(person_name)
+
+        if output is not None:
+            print("Name: " + output.person_name)
+            print("Type: " + output.person_type)
+            print("Office Space: " + output.officeSpace)
+            if output.person_type == "fellow":
+                if output.livingSpace is not None:
+                    print("Living space: " + output.livingSpace)
+        else:
+            print("Person Not Found. Please try again")
+        print("")
 
     @docopt_cmd
     def do_reallocate_person(self, arg):

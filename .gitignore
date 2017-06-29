@@ -16,4 +16,5 @@ database/dojoObject.file
 database/full.db
 .coverage
 htmlcov
+modules/.idea/
 >>>>>>> develop

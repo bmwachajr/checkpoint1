@@ -250,7 +250,6 @@ class dojo(object):
 
     def room_restore(self):
         for room in self.all_rooms:
-            print(room.room_name + " " + room.room_type)
             # appende to correct room list
             if room.room_type.lower() == "officespace":
                 self.all_offices.append(room)

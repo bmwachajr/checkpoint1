@@ -119,9 +119,12 @@ class testCasesDojo(unittest.TestCase):
         self.assertEqual(len(self.dojo.unallocated_livingspaces), 4)
         self.dojo.print_unallocated("Y")
 
-    def test_print_room(self):
+    def test_find_room(self):
         self.dojo.create_room("Dakar", "Office")
         self.dojo.load_people('file.txt')
+        Dakar = self.dojo.find_room("Dakar")
+        self.assertEqual(Dakar.room_name, "Dakar")
+        self.assertEqual(len(Dakar.occupants), 6)
         #self.dojo.print_room("Dakar")
         #self.dojo.print_room("Oculus")
 
@@ -141,7 +144,7 @@ class testCasesDojo(unittest.TestCase):
     def test_load_state(self):
         self.dojo.load_state("database.db")
         self.assertTrue(self.dojo.all_rooms)
-        print(len(self.dojo.all_offices))
+        self.assertEqual(len(self.dojo.all_rooms), 2)
 
 
 if __name__ == "__main__":
