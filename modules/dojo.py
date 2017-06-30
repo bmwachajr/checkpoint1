@@ -97,7 +97,7 @@ class dojo(object):
 
     def allocate_officeSpace(self, new_occupant):
         """Allocate a random office"""
-        if len(self.avialable_offices) > 0:
+        if self.avialable_offices:
             random_office = choice(self.avialable_offices)
             random_office.occupants.append(new_occupant.person_name)
 
@@ -112,7 +112,7 @@ class dojo(object):
 
     def allocate_livingSpace(self, new_occupant):
         """Allocate a living space"""
-        if len(self.avialable_livingspaces) > 0:
+        if self.avialable_livingspaces:
             random_livingspace = choice(self.avialable_livingspaces)
             random_livingspace.occupants.append(new_occupant.person_name)
 
