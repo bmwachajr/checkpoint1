@@ -18,6 +18,7 @@ from docopt import docopt, DocoptExit
 from functools import wraps
 import sys
 from dojo import dojo
+from pathlib import Path
 
 dojo = dojo()
 
@@ -80,7 +81,6 @@ class DojoCLI(cmd.Cmd):
         person_name = arg['<first_name>'] + " " + arg['<last_name>']
         person_type = arg['<person_type>']
         wants_accomodation = arg['<wants_accomodation>']
-
         # add the person
         output = dojo.add_person(person_name, person_type, wants_accomodation)
         print(output)
@@ -182,18 +182,17 @@ class DojoCLI(cmd.Cmd):
             print(room.room_name + " " + room.room_type)
             print("."*40)
             for person in room.occupants:
-                print(person.person_name + " (" + person.person_type + ")")
+                print(person)
+        print("")
 
     @docopt_cmd
     def do_save_state(self, arg):
         """Usage: save_state [<--db=sqlite_database>]"""
         if arg['<--db=sqlite_database>'] is None:
             arg['<--db=sqlite_database>'] = "database.db"
+
         output = dojo.save_state(arg['<--db=sqlite_database>'])
-        if output is True:
-            print("successfully saved state to database")
-        else:
-            print("There was a problem in saving state.")
+        print(output)
 
     @docopt_cmd
     def do_load_state(self, arg):
@@ -203,10 +202,13 @@ class DojoCLI(cmd.Cmd):
         else:
             database_name = arg['<--db=sqlite_database>']
 
-        dojo.load_state(database_name)
-
-        if dojo is not None:
-            print("We have lift off")
+            # check if database exists
+            db = Path("../database/" + database_name)
+            if db.is_file():
+                dojo.load_state(database_name)
+                print("Successfully Loaded sate")
+            else:
+                print("Thats Database doesnt exist. Please try again")
 
     def do_quit(self, arg):
         """Quits out of Interactive Mode."""

@@ -53,7 +53,7 @@ class dojo(object):
 
             # return receipt of success or failure
             if new_livingspace is not None:
-                return ("A livingspace " + new_livingspace.room_name + "was created successfully")
+                return ("A livingspace " + new_livingspace.room_name + " was created successfully")
             else:
                 return("The Livingspace was not created successfully")
 
@@ -72,7 +72,8 @@ class dojo(object):
             # allocate office and livingSpace
             new_fellow.officeSpace = self.allocate_officeSpace(new_fellow)
             if wants_acomodation is None or wants_acomodation.lower() == 'n':
-                return new_fellow
+                return ("A fellow called " + new_fellow.person_name + " was created successfully\n"+
+                        "Fellow " + new_fellow.person_name + " was allocated the Office " + new_fellow.officeSpace +"\n")
             elif wants_acomodation.lower() == "y":
                 new_fellow.livingSpace = self.allocate_livingSpace(new_fellow)
                 return ("A fellow called " + new_fellow.person_name + " was created successfully\n"+
@@ -86,8 +87,11 @@ class dojo(object):
 
             # allocate office and livingSpace
             new_staff.officeSpace = self.allocate_officeSpace(new_staff)
+
+            if wants_acomodation.lower() == "y":
+                msg = ("Sorry, staff cannot be allocated living space")
             return ("A staff called " + new_staff.person_name + " was created successfully \n"+
-                    "Staff " + new_staff.person_name + " was allocated the office " + new_staff.officeSpace )
+                    "Staff " + new_staff.person_name + " was allocated the office " + new_staff.officeSpace + msg)
 
     def allocate_officeSpace(self, new_occupant):
         """Allocate a random office"""
@@ -133,6 +137,9 @@ class dojo(object):
                 current_room_name = person.officeSpace
             else:
                 current_room_name = person.livingSpace
+
+            if current_room_name == new_room.room_name:
+                return ("Cannot reallocate becuase " + person.person_name + " is already in " + new_room.room_name)
             current_room = self.find_room(current_room_name)
 
         # reallocate person
@@ -154,7 +161,7 @@ class dojo(object):
         return None
 
     def find_room(self, room_name):
-        """search fro a room using its name"""
+        """search for a room using its name"""
         for room in self.all_rooms:
             if room.room_name.lower() == room_name.lower():
                 return room
@@ -222,17 +229,23 @@ class dojo(object):
 
         # open database and ctreate a table
         db = sqlite3.connect("../database/" + str(database_name))
-        db.execute('''CREATE TABLE if not exists Dojo
+        cursor = db.cursor()
+        cursor.execute('''CREATE TABLE if not exists Dojo
                      (ID INTEGER PRIMARY KEY AUTOINCREMENT,
                      EMPLOYEES TEXT NOT NULL,
                      ROOMS TEXT NOT NULL)''')
 
         # Insert file into database
-        db.execute('''INSERT INTO dojo(EMPLOYEES, ROOMS)
+        cursor.execute('''INSERT INTO dojo(EMPLOYEES, ROOMS)
                      VALUES(?,?)''', (employees_pickle, rooms_pickle))
 
         db.commit()
-        db.close()
+        if cursor.rowcount == 1:
+            db.close()
+            return ("Successfully Saved state")
+        else:
+            db.close()
+            return ("There was a problem Saving state")
 
     def load_state(self, database_name):
         """Restore all data to the application"""
