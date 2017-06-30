@@ -90,6 +90,8 @@ class dojo(object):
 
             if wants_acomodation.lower() == "y":
                 msg = ("Sorry, staff cannot be allocated living space")
+            else:
+                msg = ""
             return ("A staff called " + new_staff.person_name + " was created successfully \n"+
                     "Staff " + new_staff.person_name + " was allocated the office " + new_staff.officeSpace + msg)
 
